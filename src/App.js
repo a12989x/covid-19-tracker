@@ -5,6 +5,7 @@ import { CovidContext } from './contexts/CovidContext';
 
 import InfoBox from './components/InfoBox';
 import Table from './components/Table';
+import Graph from './components/Graph';
 
 const App = () => {
     const { countries, country, countryInfo, onCountryChange } = useContext(
@@ -38,6 +39,7 @@ const App = () => {
             />
 
             <Table />
+            <Graph />
         </div>
     );
 };
