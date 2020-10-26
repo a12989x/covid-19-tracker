@@ -1,9 +1,13 @@
 import React from 'react';
 
-const InfoBox = () => {
+const InfoBox = ({ title, cases, total }) => {
     return (
         <div>
-            <p>InfoBox Component</p>
+            <h2>{title}</h2>
+            <p>
+                <strong>{cases}</strong>
+            </p>
+            <p>{total} Total</p>
         </div>
     );
 };
