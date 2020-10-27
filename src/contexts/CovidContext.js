@@ -1,4 +1,8 @@
 import React, { useState, useEffect, createContext } from 'react';
+import numeral from 'numeral';
+import { Circle, Popup } from 'react-leaflet';
+
+import casesTypeColors from '../casesTypeColors';
 
 export const CovidContext = createContext();
 
@@ -12,6 +16,12 @@ const CovidContextProvider = ({ children }) => {
     const [tableData, setTableData] = useState([]);
     const [graphData, setGraphData] = useState({});
     const [casesType, setCasesType] = useState('cases');
+    const [mapCenter, setMapCenter] = useState({
+        lat: 34.80746,
+        lng: -40.4796,
+    });
+    const [mapZoom, setMapZoom] = useState(3);
+    const [mapCountries, setMapCountries] = useState([]);
 
     useEffect(() => {
         const getCountriesData = async () => {
@@ -30,6 +40,7 @@ const CovidContextProvider = ({ children }) => {
             const sortedData = sortData(data);
             setTableData(sortedData);
             setCountries(countries);
+            setMapCountries(data);
         };
 
         const getAllCountryInfo = async () => {
@@ -48,7 +59,7 @@ const CovidContextProvider = ({ children }) => {
                 'https://disease.sh/v3/covid-19/historical/all?lastdays=120'
             );
             const data = await response.json();
-            const chartData = buildChartData(data, 'cases');
+            const chartData = buildChartData(data, casesType);
             setGraphData(chartData);
         };
 
@@ -59,7 +70,6 @@ const CovidContextProvider = ({ children }) => {
         const countryLabel = e.label;
         const countryCode = e.value;
         setCountry({ label: countryLabel, value: countryCode });
-        console.log(countryCode);
 
         const url =
             countryCode === 'worldwide'
@@ -69,6 +79,8 @@ const CovidContextProvider = ({ children }) => {
         const response = await fetch(url);
         const data = await response.json();
         setCountryInfo(data);
+        setMapCenter([data.countryInfo.lat, data.countryInfo.long]);
+        setMapZoom(4);
     };
 
     const buildChartData = (data, casesType) => {
@@ -99,15 +111,47 @@ const CovidContextProvider = ({ children }) => {
         return sortedData;
     };
 
+    const showDataOnMap = (data, casesType) =>
+        data.map((country) => (
+            <Circle
+                center={[country.countryInfo.lat, country.countryInfo.long]}
+                fillOpacity={0.4}
+                color={casesTypeColors[casesType].hex}
+                fillColor={casesTypeColors[casesType].hex}
+                radius={
+                    Math.sqrt(country[casesType]) *
+                    casesTypeColors[casesType].multiplier
+                }
+            >
+                <Popup>
+                    <img src={`${country.countryInfo.flag}`} alt='' />
+                    <h3>{country.country}</h3>
+                    <p>Cases: {numeral(country.cases).format('0,0')}</p>
+                    <p>Recovered: {numeral(country.recovered).format('0,0')}</p>
+                    <p>Deaths: {numeral(country.deaths).format('0,0')}</p>
+                </Popup>
+            </Circle>
+        ));
+
+    const prettyPrintStat = (stat) =>
+        stat ? `+${numeral(stat).format('0.0a')}` : '+0';
+
     return (
         <CovidContext.Provider
             value={{
+                casesType,
+                setCasesType,
                 countries,
                 country,
                 tableData,
                 graphData,
                 countryInfo,
+                mapCenter,
+                mapZoom,
+                mapCountries,
                 onCountryChange,
+                showDataOnMap,
+                prettyPrintStat,
             }}
         >
             {children}
