@@ -1,0 +1,56 @@
+.infoBox {
+    width: 100%;
+    border: 1px solid #b1b1b1;
+    border-radius: 5px;
+    position: relative;
+    cursor: pointer;
+
+    &__title {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        color: #b1b1b1;
+    }
+
+    &__cases {
+        padding: 0.5rem 1rem;
+        font-size: 1.5rem;
+        margin: 0;
+        color: #fd5d5d;
+    }
+
+    &__total {
+        padding: 0.5rem 1rem;
+        color: #6e6e6e;
+        font-weight: bold;
+        margin: 0.5rem 0;
+    }
+
+    &::before {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 5px;
+        background-color: transparent;
+        border-radius: 10px;
+        transition: 0.3s;
+    }
+
+    &-active {
+        &::before {
+            background-color: #fd5d5d;
+        }
+    }
+
+    &__recovered {
+        .infoBox__cases {
+            color: #5dfd93;
+        }
+
+        &-active {
+            &::before {
+                background-color: #5dfd93;
+            }
+        }
+    }
+}

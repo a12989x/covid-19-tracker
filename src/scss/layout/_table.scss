@@ -1,0 +1,27 @@
+.table {
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+    grid-column: 4 / -1;
+    grid-row: 1 / span 2;
+    border-bottom: 1px solid #b1b1b1;
+
+    h2 {
+        position: sticky;
+        top: 0;
+        padding: 0.5rem 0;
+        background-color: #fff;
+        border-bottom: 1px solid #b1b1b1;
+    }
+
+    tr {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.5rem;
+        width: 100%;
+
+        &:nth-of-type(odd) {
+            background-color: #f3f2f8;
+        }
+    }
+}
