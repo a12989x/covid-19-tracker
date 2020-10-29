@@ -5,6 +5,8 @@ import CovidContextProvider from './contexts/CovidContext';
 
 import App from './App';
 
+import './scss/main.scss';
+
 ReactDOM.render(
     <React.StrictMode>
         <CovidContextProvider>
