@@ -1,14 +1,19 @@
 import React from 'react';
 
-const InfoBox = ({ title, cases, total }) => {
+const InfoBox = ({ title, cases, total, active, onClick }) => {
     return (
-        <div>
-            <h2>{title}</h2>
-            <p>
+        <section
+            onClick={onClick}
+            className={`infoBox ${active && 'infoBox-active'}
+            ${title === 'Recovered' && 'infoBox__recovered'}
+             ${title === 'Recovered' && active && 'infoBox__recovered-active'}`}
+        >
+            <h2 className='infoBox__title'>{title}</h2>
+            <p className='infoBox__cases'>
                 <strong>{cases}</strong>
             </p>
-            <p>{total} Total</p>
-        </div>
+            <p className='infoBox__total'>{total} Total</p>
+        </section>
     );
 };
 

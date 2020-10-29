@@ -6,10 +6,11 @@ import { CovidContext } from '../contexts/CovidContext';
 import options from '../chartOptions';
 
 const Graph = () => {
-    const { graphData } = useContext(CovidContext);
+    const { graphData, casesType } = useContext(CovidContext);
 
     return (
-        <div>
+        <section className='graph'>
+            <h2>Worldwide new {casesType}</h2>
             {graphData?.length > 0 && (
                 <Line
                     data={{
@@ -24,7 +25,7 @@ const Graph = () => {
                     options={options}
                 />
             )}
-        </div>
+        </section>
     );
 };
 
