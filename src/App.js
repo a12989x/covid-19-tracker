@@ -9,35 +9,51 @@ import Graph from './components/Graph';
 import Map from './components/Map';
 
 const App = () => {
-    const { countries, country, countryInfo, onCountryChange } = useContext(
-        CovidContext
-    );
+    const {
+        countries,
+        country,
+        countryInfo,
+        casesType,
+        setCasesType,
+        onCountryChange,
+        prettyPrintStat,
+    } = useContext(CovidContext);
 
     return (
         <div className='app'>
-            <p>App Component</p>
-            <Select
-                options={countries}
-                defaultValue={country.value}
-                defaultInputValue={country.label}
-                onChange={onCountryChange}
-            />
+            <section className='header'>
+                <h1>Coronavirus Tracker</h1>
+                <Select
+                    options={countries}
+                    defaultValue={country.value}
+                    defaultInputValue={country.label}
+                    onChange={onCountryChange}
+                />
+            </section>
 
-            <InfoBox
-                title='Coronavirus Cases'
-                cases={countryInfo.todayCases}
-                total={countryInfo.cases}
-            />
-            <InfoBox
-                title='Recovered'
-                cases={countryInfo.todayRecovered}
-                total={countryInfo.recovered}
-            />
-            <InfoBox
-                title='Deaths'
-                cases={countryInfo.todayDeaths}
-                total={countryInfo.deaths}
-            />
+            <section className='infoBoxes'>
+                <InfoBox
+                    title='Coronavirus Cases'
+                    cases={prettyPrintStat(countryInfo.todayCases)}
+                    total={prettyPrintStat(countryInfo.cases)}
+                    active={casesType === 'cases'}
+                    onClick={() => setCasesType('cases')}
+                />
+                <InfoBox
+                    title='Recovered'
+                    cases={prettyPrintStat(countryInfo.todayRecovered)}
+                    total={prettyPrintStat(countryInfo.recovered)}
+                    active={casesType === 'recovered'}
+                    onClick={() => setCasesType('recovered')}
+                />
+                <InfoBox
+                    title='Deaths'
+                    cases={prettyPrintStat(countryInfo.todayDeaths)}
+                    total={prettyPrintStat(countryInfo.deaths)}
+                    active={casesType === 'deaths'}
+                    onClick={() => setCasesType('deaths')}
+                />
+            </section>
 
             <Table />
             <Graph />
